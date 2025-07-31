@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealario SmartWatch Pro</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Serif", "Noto Sans", sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            direction: ltr;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .layout-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            flex-grow: 1;
+            flex-wrap: wrap;
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            min-width: 300px;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        /* Product showcase with gallery */
+        .product-showcase {
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .main-image-container {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            background-color: #f1f3f5;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            z-index: 10;
+            color: #2c3e50;
+        }
+
+        .image-nav:hover {
+            background: rgba(255,255,255,1);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            padding: 15px;
+            background-color: #f1f3f5;
+        }
+
+        .thumbnail {
+            aspect-ratio: 1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.03);
+            border-color: #e74c3c;
+        }
+
+        .thumbnail.active {
+            border-color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+            text-align: left;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e74c3c;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Features section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px;
+            border: 1px solid #e0e6ed;
+            border-radius: 10px;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.15);
+            border-color: #e74c3c;
+        }
+
+        .icon {
+            width: 28px;
+            height: 28px;
+            fill: #2c3e50;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-card:hover .icon {
+            transform: scale(1.1);
+        }
+
+        /* Specifications */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 15px;
+            border-top: 1px solid #e0e6ed;
+            border-radius: 8px;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .spec-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(3px);
+        }
+
+        .spec-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .spec-label {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .spec-value {
+            color: #2c3e50;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* Reviews section */
+        .reviews-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px;
+            align-items: center;
+        }
+
+        .rating-overview {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .rating-score {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1;
+            color: #e74c3c;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+        }
+
+        .star {
+            color: #e74c3c;
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .star.empty {
+            color: #bdc3c7;
+        }
+
+        .review-count {
+            font-size: 15px;
+            font-weight: normal;
+            color: #7f8c8d;
+        }
+
+        .rating-bars {
+            flex: 1;
+            min-width: 200px;
+            max-width: 350px;
+            display: grid;
+            grid-template-columns: 25px 1fr 45px;
+            align-items: center;
+            gap-y: 12px;
+        }
+
+        .rating-bar {
+            display: contents;
+        }
+
+        .rating-bar span:first-child {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .bar-container {
+            height: 8px;
+            background-color: #e0e6ed;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            background-color: #e74c3c;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .rating-bar span:last-child {
+            font-size: 13px;
+            color: #7f8c8d;
+            text-align: left;
+        }
+
+        /* Reviews list */
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .review {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+
+        .review:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #e74c3c;
+            transition: transform 0.2s ease;
+        }
+
+        .review:hover .reviewer-avatar {
+            transform: scale(1.05);
+        }
+
+        .reviewer-info {
+            flex: 1;
+        }
+
+        .reviewer-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .review-date {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .review-text {
+            font-size: 15px;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 30px;
+            color: #7f8c8d;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        /* Offer section */
+        .offer-section {
+            padding: 25px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            margin: 20px;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.25);
+        }
+
+        .offer-text {
+            font-size: 17px;
+            font-weight: normal;
+            margin: 10px 0 20px 0;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 15px;
+            padding: 20px 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            flex: 1;
+            min-width: 80px;
+            max-width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-value {
+            height: 45px;
+            width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            color: #e74c3c;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sidebar content */
+        .product-rating {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-description {
+            font-size: 15px;
+            font-weight: normal;
+            padding: 10px 20px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .original-price {
+            font-size: 15px;
+            color: #7f8c8d;
+            padding: 10px 20px;
+            text-decoration: line-through;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            padding: 15px;
+            text-align: center;
+            color: #e74c3c;
+        }
+
+        .features-list {
+            padding: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            min-height: 50px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-item:hover {
+            background-color: #ffffff;
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .check-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            color: white;
+            flex-shrink: 0;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover .check-icon {
+            transform: scale(1.1);
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            max-width: 480px;
+            height: 45px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 22px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 15px auto;
+        }
+
+        .primary-btn {
+            background-color: #e74c3c;
+            color: white;
+            box-shadow: 0 3px 12px rgba(231, 76, 60, 0.25);
+        }
+
+        .primary-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .order-form {
+            padding: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 160px;
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-width: 0;
+            flex: 1;
+            resize: none;
+            overflow: hidden;
+            height: 45px;
+            padding: 12px 15px;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #2c3e50;
+            font-size: 15px;
+            font-weight: normal;
+            line-height: normal;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e74c3c;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #7f8c8d;
+        }
+
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24px' height='24px' fill='rgb(127,140,141)' viewBox='0 0 256 256'%3e%3cpath d='M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z'%3e%3c/path%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+            appearance: none;
+        }
+
+        /* Additional sections */
+        .lifestyle-section {
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .lifestyle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .lifestyle-image {
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .lifestyle-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Shipping and warranty info */
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .info-card:hover {
+            background-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .info-icon {
+            width: 35px;
+            height: 35px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        /* Success message */
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .success-message.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+            
+            .main-image-container {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .countdown {
+                gap: 10px;
+            }
+            
+            .rating-bars {
+                grid-template-columns: 20px 1fr 35px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .price {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                padding: 10px;
+            }
+            
+            .main-image-container {
+                height: 280px;
+            }
+            
+            .countdown-item {
+                min-width: 70px;
+                padding: 8px;
+            }
+            
+            .countdown-value {
+                height: 35px;
+                width: 35px;
+                font-size: 16px;
+            }
+            
+            .sidebar {
+                padding: 15px;
+            }
+            
+            .content-wrapper {
+                gap: 20px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="layout-container">
+            <div class="content-wrapper">
+                <div class="main-content">
+                    <div class="product-showcase">
+                        <div class="main-image-container">
+                            <div class="main-image" id="mainImage" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZtBCNz_O-S9T-4Wzk42O00tc_3LDasUeG1RBEkzX4PNmVo8U1iXP6CoClPsx89lVXHpnEWWouVOfUQHiAoX4NVjw_Tii2Skxf28Oz3VFMBMzdTLV9_0Tr9YosdK8lESiFM6UOPn0oLreZ30tUOfqvktkH_RrptY0bk4jLRLglAOxF6KvFqJxclAxfWXVLzlUNFrYy6AmPbH04oqGyqnNrsPYW-hsQCOORgKLgtMfncamcGk15OYjpKLBBQzYulvo8_j0TNrj6Jg0');"></div>
+                            <button class="image-nav prev" onclick="changeImage(-1)">‹</button>
+                            <button class="image-nav next" onclick="changeImage(1)">›</button>
+                        </div>
+                        <div class="thumbnail-grid">
+                            <div class="thumbnail active" onclick="setMainImage(0, this)" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZtBCNz_O-S9T-4Wzk42O00tc_3LDasUeG1RBEkzX4PNmVo8U1iXP6CoClPsx89lVXHpnEWWouVOfUQHiAoX4NVjw_Tii2Skxf28Oz3VFMBMzdTLV9_0Tr9YosdK8lESiFM6UOPn0oLreZ30tUOfqvktkH_RrptY0bk4jLRLglAOxF6KvFqJxclAxfWXVLzlUNFrYy6AmPbH04oqGyqnNrsPYW-hsQCOORgKLgtMfncamcGk15OYjpKLBBQzYulvo8_j0TNrj6Jg0');"></div>
+                            <div class="thumbnail" onclick="setMainImage(1, this)" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5vlKl4_Ny0PDddWQAEUTyn86S7hs3dctKDoR615_iie-3t7pL-ViNYC-nhEr-SA6i2sp5HDb42ajBc1K6mpvSPlDXSvVTzaLc0T4X798W_Cxsn81UH7s6AAEb0jV36kAp5r6JsRa2g5_KGBCpgpaJ9fVWDEtqt-L8681fuAPEqDwfIUkBIjqVkFxt1qi8ML6QWZefKO2CdMvOrpa2zw-VEuEMmp8lxf0hGj0ViC-MOZVsPtiLbwoCKSb0sMzRvwaR5apX373bnlQ');"></div>
+                            <div class="thumbnail" onclick="setMainImage(2, this)" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCB7wGNbxUkgYUVxP1lJmx_DpqDQKygfdUAWrMuK5TcIovUacjSWe01zhI25P2QoG4hRT-k6WgxGM9Xa9AwH4dcwKltaVlhsqIyylxYU8iDT6vPNIlOHDof8fS5nuxeT4gz8IX0FGeBU4k9b1fAg05sjxo8_tpYwc4lCTJDwCvKSjC38J99N4ubVIFOLzRHIjz3yhFOs-HOnEoaOI4GLV6dvzMwajrHxFhy1umWgEZHpXQmxqv1X_udHc8-wPt2IpIwnCfW0jCZk08');"></div>
+                            <div class="thumbnail" onclick="setMainImage(3, this)" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXADDkFE4Z795h-GWqyFspvmInqHjLVbDaNMj2wFrNVGcJZnP8Rf27C2_6cr9RYZF6zGox2CT57tM2yrt8QGXV9TkKeIQos3JoyPgNZ4IbTJ1QmrUaLxQSFgauSWF-RXpFhe0IhLyUK5E4N-rCEGMQrI0iWxvSuu4vnZwONUEllC45vGjFYkIL8e_ztrbQ8UrqmTzUYmwwKTaSkLOlAyp00Fduhft_7T6BDsdwlP54kX9diyTOGogKrmy4XIDjOtUXp-nUmyadFqU');"></div>
+                            <div class="thumbnail" onclick="setMainImage(4, this)" style="background-image: url('https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');"></div>
+                            <div class="thumbnail" onclick="setMainImage(5, this)" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');"></div>
+                        </div>
+                    </div>
+
+                    <section class="features-section">
+                        <h2>Features</h2>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H208a8,8,0,0,1,8,8Zm-48,48a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224Z"></path>
+                                </svg>
+                                <h3>Large screen</h3>
+                            </div>
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M178,32c-20.65,0-38.73,8.88-50,23.89C116.73,40.88,98.65,32,78,32A62.07,62.07,0,0,0,16,94c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,220.66,240,164,240,94A62.07,62.07,0,0,0,178,32ZM128,206.8C109.74,196.16,32,147.69,32,94A46.06,46.06,0,0,1,78,48c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,147.61,146.24,196.15,128,206.8Z"></path>
+                                </svg>
+                                <h3>Health tracking</h3>
+                            </div>
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M152,88a32,32,0,1,0-32-32A32,32,0,0,0,152,88Zm0-48a16,16,0,1,1-16,16A16,16,0,0,1,152,40Zm67.31,100.68c-.61.28-7.49,3.28-19.67,3.28-13.85,0-34.55-3.88-60.69-20a169.31,169.31,0,0,1-15.41,32.34,104.29,104.29,0,0,1,31.31,15.81C173.92,186.65,184,207.35,184,232a8,8,0,0,1-16,0c0-41.7-34.69-56.71-54.14-61.85-.55.7-1.12,1.41-1.69,2.1-19.64,23.8-44.25,36.18-71.63,36.18A92.29,92.29,0,0,1,31.2,208,8,8,0,0,1,32.8,192c25.92,2.58,48.47-7.49,67-30,12.49-15.14,21-33.61,25.25-47C86.13,92.35,61.27,111.63,61,111.84A8,8,0,1,1,51,99.36c1.5-1.2,37.22-29,89.51,6.57,45.47,30.91,71.93,20.31,72.18,20.19a8,8,0,1,1,6.63,14.56Z"></path>
+                                </svg>
+                                <h3>Sports tracking</h3>
+                            </div>
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M200,56H32A24,24,0,0,0,8,80v96a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V80A24,24,0,0,0,200,56Zm8,120a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8Zm48-80v64a8,8,0,0,1-16,0V96a8,8,0,0,1,16,0ZM138.81,123.79a8,8,0,0,1,.35,7.79l-16,32a8,8,0,0,1-14.32-7.16L119.06,136H100a8,8,0,0,1-7.16-11.58l16-32a8,8,0,1,1,14.32,7.16L112.94,120H132A8,8,0,0,1,138.81,123.79Z"></path>
+                                </svg>
+                                <h3>Long battery</h3>
+                            </div>
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"></path>
+                                </svg>
+                                <h3>Water resistant</h3>
+                            </div>
+                            <div class="feature-card">
+                                <svg class="icon" viewBox="0 0 256 256">
+                                    <path d="M216,128v80a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V56A16,16,0,0,1,48,40h80a8,8,0,0,1,0,16H48V208H200V128a8,8,0,0,1,16,0Zm16-68a36,36,0,1,1-36-36A36,36,0,0,1,232,60Zm-16,0a20,20,0,1,0-20,20A20,20,0,0,0,216,60Z"></path>
+                                </svg>
+                                <h3>Notifications</h3>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lifestyle-section">
+                        <h2>Lifestyle</h2>
+                        <div class="lifestyle-grid">
+                            <div class="lifestyle-image" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                            <div class="lifestyle-image" style="background-image: url('https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                            <div class="lifestyle-image" style="background-image: url('https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                        </div>
+                    </section>
+
+                    <section class="specs-section">
+                        <h2>Specifications</h2>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <p class="spec-label">Display</p>
+                                <p class="spec-value">1.75" AMOLED</p>
+                            </div>
+                            <div class="spec-item">
+                                <p class="spec-label">Battery</p>
+                                <p class="spec-value">280mAh</p>
+                            </div>
+                            <div class="spec-item">
+                                <p class="spec-label">Connectivity</p>
+                                <p class="spec-value">Bluetooth 5.0</p>
+                            </div>
+                            <div class="spec-item">
+                                <p class="spec-label">Water Resistance</p>
+                                <p class="spec-value">IP68</p>
+                            </div>
+                            <div class="spec-item full-width">
+                                <p class="spec-label">Compatibility</p>
+                                <p class="spec-value">Android 5.0+/iOS 10+</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="info-section">
+                        <div class="info-card">
+                            <div class="info-icon">🚚</div>
+                            <div class="info-text">Free shipping on all orders</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">🛡️</div>
+                            <div class="info-text">1 year warranty</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">↩️</div>
+                            <div class="info-text">14-day return policy</div>
+                        </div>
+                    </section>
+
+                    <section class="reviews-section">
+                        <h2>Customer Reviews</h2>
+                        <div class="reviews-summary">
+                            <div class="rating-overview">
+                                <p class="rating-score">4.9</p>
+                                <div class="stars">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                                <p class="review-count">5,000+ reviews</p>
+                            </div>
+                            <div class="rating-bars">
+                                <div class="rating-bar">
+                                    <span>5</span>
+                                    <div class="bar-container"><div class="bar" style="width: 86%"></div></div>
+                                    <span>86%</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>4</span>
+                                    <div class="bar-container"><div class="bar" style="width: 10%"></div></div>
+                                    <span>10%</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>3</span>
+                                    <div class="bar-container"><div class="bar" style="width: 2%"></div></div>
+                                    <span>2%</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>2</span>
+                                    <div class="bar-container"><div class="bar" style="width: 1%"></div></div>
+                                    <span>1%</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>1</span>
+                                    <div class="bar-container"><div class="bar" style="width: 1%"></div></div>
+                                    <span>1%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reviews-list">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCndwsVlmkAnxPxCzxk6LbIPMUcZWizaPBEK3v9XFtjxw0JL11m0-QZSpMDQgV7Q19IAf_z1qe4By99KZkFu04hQ6fc1sYTuOq2JUOFjOFSYZhrbozuwq1cB6hvY92UO54xz_UmbMBCg6LMU-4rf8hN6vjZH9Pll6-6R8f-pGkupE-p6nqZ5IU26j__JTWcLCQ8oK9YE_Bt1uUUr-7ZoE9BdwgxayfmZnrQBvEXBAIhGaR7cuEj4YKZChiuqu7LHGs3VmS7nFnbJs');"></div>
+                                    <div class="reviewer-info">
+                                        <p class="reviewer-name">Amira Hassan</p>
+                                        <p class="review-date">2023-08-15</p>
+                                    </div>
+                                </div>
+                                <div class="review-rating">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                </div>
+                                <p class="review-text">This smartwatch is amazing! The health tracking features are very accurate, and the battery lasts for days. Highly recommend!</p>
+                                <div class="review-actions">
+                                    <button class="action-btn"><span class="icon">👍</span> 15</button>
+                                    <button class="action-btn"><span class="icon">👎</span> 2</button>
+                                </div>
+                            </div>
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBt_Bfs2rNpS9F70qQm13kKEL_t2M3B8nYpnImnqfD6zNw_NzJB6xOCO_xaQRcjTQFM3AE4puOgqrkE4ReoNwA3LSkwCl8lMpBckv5mc2tPfKujsnBH3Wf_J5ozWDnszNCSwrm25yfb5g2KrOr7Au1iPGllksC2TG0T5-rYCAv5KUhgpVXotQWtETHZZoEdV8cMQhgFmWWqFdlHU353BgfwD5tlJMqTvNNigIQN089EzSa7cVAjfFRgYATZ4JchUfMTUxrPQ26lMOg');"></div>
+                                    <div class="reviewer-info">
+                                        <p class="reviewer-name">Omar Khaled</p>
+                                        <p class="review-date">2023-07-22</p>
+                                    </div>
+                                </div>
+                                <div class="review-rating">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                                <p class="review-text">Great smartwatch for the price. The display is clear, and it's very comfortable to wear. The sports tracking could be a bit more detailed.</p>
+                                <div class="review-actions">
+                                    <button class="action-btn"><span class="icon">👍</span> 10</button>
+                                    <button class="action-btn"><span class="icon">👎</span> 1</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="offer-section">
+                        <h2>Limited Offer</h2>
+                        <p class="offer-text">Get 20% off and free shipping for a limited time! Plus, enjoy a 14-day return policy.</p>
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="hours">23</div>
+                                <div class="countdown-label">Hours</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="minutes">59</div>
+                                <div class="countdown-label">Minutes</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="seconds">59</div>
+                                <div class="countdown-label">Seconds</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="sidebar">
+                    <h1>Dealario SmartWatch Pro</h1>
+                    <div class="product-rating">
+                        <p class="rating-score">4.9</p>
+                        <div class="stars">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-count">5,000+ reviews</p>
+                    </div>
+                    <p class="product-description">Elegant smartwatch with advanced health tracking.</p>
+                    <p class="original-price">Original: $89.99</p>
+                    <h3 class="price">$69.99</h3>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <span class="check-icon">✓</span>
+                            <span>AMOLED Display</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="check-icon">✓</span>
+                            <span>IP68 Water Resistance</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="check-icon">✓</span>
+                            <span>Android/iOS Support</span>
+                        </div>
+                    </div>
+                    <button class="btn primary-btn" onclick="showOrderForm()">Order Now</button>
+                    <h2>Order Form</h2>
+                    <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <select id="color" name="color" required>
+                                <option value="">Select color</option>
+                                <option value="black">Black</option>
+                                <option value="silver">Silver</option>
+                                <option value="gold">Gold</option>
+                                <option value="rose-gold">Rose Gold</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn primary-btn">Confirm Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success message -->
+    <div class="success-message" id="successMessage">
+        ✓ Order submitted successfully!
+    </div>
+
+    <script>
+        // Image gallery functionality
+        const images = [
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuBZtBCNz_O-S9T-4Wzk42O00tc_3LDasUeG1RBEkzX4PNmVo8U1iXP6CoClPsx89lVXHpnEWWouVOfUQHiAoX4NVjw_Tii2Skxf28Oz3VFMBMzdTLV9_0Tr9YosdK8lESiFM6UOPn0oLreZ30tUOfqvktkH_RrptY0bk4jLRLglAOxF6KvFqJxclAxfWXVLzlUNFrYy6AmPbH04oqGyqnNrsPYW-hsQCOORgKLgtMfncamcGk15OYjpKLBBQzYulvo8_j0TNrj6Jg0',
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuC5vlKl4_Ny0PDddWQAEUTyn86S7hs3dctKDoR615_iie-3t7pL-ViNYC-nhEr-SA6i2sp5HDb42ajBc1K6mpvSPlDXSvVTzaLc0T4X798W_Cxsn81UH7s6AAEb0jV36kAp5r6JsRa2g5_KGBCpgpaJ9fVWDEtqt-L8681fuAPEqDwfIUkBIjqVkFxt1qi8ML6QWZefKO2CdMvOrpa2zw-VEuEMmp8lxf0hGj0ViC-MOZVsPtiLbwoCKSb0sMzRvwaR5apX373bnlQ',
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCB7wGNbxUkgYUVxP1lJmx_DpqDQKygfdUAWrMuK5TcIovUacjSWe01zhI25P2QoG4hRT-k6WgxGM9Xa9AwH4dcwKltaVlhsqIyylxYU8iDT6vPNIlOHDof8fS5nuxeT4gz8IX0FGeBU4k9b1fAg05sjxo8_tpYwc4lCTJDwCvKSjC38J99N4ubVIFOLzRHIjz3yhFOs-HOnEoaOI4GLV6dvzMwajrHxFhy1umWgEZHpXQmxqv1X_udHc8-wPt2IpIwnCfW0jCZk08',
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuDXADDkFE4Z795h-GWqyFspvmInqHjLVbDaNMj2wFrNVGcJZnP8Rf27C2_6cr9RYZF6zGox2CT57tM2yrt8QGXV9TkKeIQos3JoyPgNZ4IbTJ1QmrUaLxQSFgauSWF-RXpFhe0IhLyUK5E4N-rCEGMQrI0iWxvSuu4vnZwONUEllC45vGjFYkIL8e_ztrbQ8UrqmTzUYmwwKTaSkLOlAyp00Fduhft_7T6BDsdwlP54kX9diyTOGogKrmy4XIDjOtUXp-nUmyadFqU',
+            'https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+        ];
+
+        let currentImageIndex = 0;
+
+        function setMainImage(index, thumbnail) {
+            currentImageIndex = index;
+            document.getElementById('mainImage').style.backgroundImage = `url('${images[index]}')`;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = images.length - 1;
+            if (currentImageIndex >= images.length) currentImageIndex = 0;
+            
+            document.getElementById('mainImage').style.backgroundImage = `url('${images[currentImageIndex]}')`;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentImageIndex);
+            });
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const endTime = now + (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (59 * 1000); // 23:59:59 from now
+            
+            const timer = setInterval(function() {
+                const currentTime = new Date().getTime();
+                const distance = endTime - currentTime;
+                
+                if (distance < 0) {
+                    clearInterval(timer);
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        // Form handling
+        function showOrderForm() {
+            document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const orderData = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span> Processing...';
+            submitBtn.disabled = true;
+            
+            // Simulate order processing
+            setTimeout(() => {
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.classList.add('show');
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 3000);
+                
+                // Reset form
+                event.target.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+
+        // Initialize countdown on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCountdown();
+            
+            // Add smooth scrolling for all internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        // Auto-rotate images every 6 seconds
+        setInterval(() => {
+            changeImage(1);
+        }, 6000);
+    </script>
+</body>
+</html>
